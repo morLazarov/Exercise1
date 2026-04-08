@@ -54,14 +54,14 @@ def tikhonov_regularized_solve(A: np.ndarray, b: np.ndarray, _reg_param: float) 
 
 
 # TODO: remove this
-def plot_pred_vs_gt(y_true, y_pred, reg_param, title="Predicted vs Ground Truth", reg_param):
+def plot_pred_vs_gt(y_true, y_pred, reg_param, title="Predicted vs Ground Truth"):
     y_true = np.array(y_true)
     y_pred = np.array(y_pred)
 
     ## Calculating the linear prediction line's m and b in y = mx + b ##
 
     ones_column = np.ones(len(y_pred))
-    A = np.cloumn_stack((y_pred, ones_column))
+    A = np.column_stack((y_pred, ones_column))
     line_values = tikhonov_regularized_solve(A, y_true, reg_param)
     m, b = line_values
 
