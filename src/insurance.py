@@ -54,7 +54,7 @@ def tikhonov_regularized_solve(A: np.ndarray, b: np.ndarray, _reg_param: float) 
 
 
 # TODO: remove this
-def plot_pred_vs_gt(y_true, y_pred, title="Predicted vs Ground Truth", reg_param):
+def plot_pred_vs_gt(y_true, y_pred, reg_param, title="Predicted vs Ground Truth", reg_param):
     y_true = np.array(y_true)
     y_pred = np.array(y_pred)
 
@@ -93,10 +93,10 @@ def plot_pred_vs_gt(y_true, y_pred, title="Predicted vs Ground Truth", reg_param
     plt.show()
 
 # Plots a spread plot, and prints the contribution of each feature to the final predicted value
-def sanity_check(column_names, y_test, y_pred, _alpha_arr):
+def sanity_check(column_names, y_test, y_pred, _alpha_arr, reg_param):
     print(f"column_names: {str(column_names)}")
     print(f"alpha_arr: {_alpha_arr}")
-    plot_pred_vs_gt(y_test, y_pred)
+    plot_pred_vs_gt(y_test, y_pred, reg_param)
 
 print(df.head())
 
