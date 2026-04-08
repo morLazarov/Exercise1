@@ -61,11 +61,11 @@ def plot_pred_vs_gt(y_true, y_pred, reg_param, title="Predicted vs Ground Truth"
     ## Calculating the linear prediction line's m and b in y = mx + b ##
 
     ones_column = np.ones(len(y_pred))
-    A = np.column_stack((y_pred, ones_column))
-    line_values = tikhonov_regularized_solve(A, y_true, reg_param)
+    A = np.column_stack((y_true, ones_column))
+    line_values = tikhonov_regularized_solve(A, y_pred, reg_param)
     m, b = line_values
 
-    y_line = m*y_pred + b
+    y_line = m*y_true + b
     
     plt.figure()
     
@@ -76,7 +76,7 @@ def plot_pred_vs_gt(y_true, y_pred, reg_param, title="Predicted vs Ground Truth"
     min_val = min(y_true.min(), y_pred.min())
     max_val = max(y_true.max(), y_pred.max())
     plt.plot([min_val, max_val], [min_val, max_val], linestyle='--')
-    plt.plot(y_pred, y_line)
+    plt.plot(y_true, y_line)
     
     # Labels and title
     plt.xlabel("Ground Truth (y)")
