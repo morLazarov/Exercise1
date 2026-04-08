@@ -54,10 +54,19 @@ def tikhonov_regularized_solve(A: np.ndarray, b: np.ndarray, _reg_param: float) 
 
 
 # TODO: remove this
-def plot_pred_vs_gt(y_true, y_pred, title="Predicted vs Ground Truth"):
+def plot_pred_vs_gt(y_true, y_pred, title="Predicted vs Ground Truth", reg_param):
     y_true = np.array(y_true)
     y_pred = np.array(y_pred)
 
+    ## Calculating the linear prediction line's m and b in y = mx + b ##
+
+    ones_column = np.ones(len(y_pred))
+    A = np.cloumn_stack((y_pred, ones_column))
+    line_values = tikhonov_regularized_solve(A, y_true, reg_param)
+    m, b = line_values
+
+    y_line = m*y_pred + b
+    
     plt.figure()
     
     # Scatter plot
@@ -67,6 +76,7 @@ def plot_pred_vs_gt(y_true, y_pred, title="Predicted vs Ground Truth"):
     min_val = min(y_true.min(), y_pred.min())
     max_val = max(y_true.max(), y_pred.max())
     plt.plot([min_val, max_val], [min_val, max_val], linestyle='--')
+    plt.plot(y_pred, y_line)
     
     # Labels and title
     plt.xlabel("Ground Truth (y)")
@@ -120,8 +130,8 @@ print(X_train)
 #### Least squares model ####
 for reg_param in TIKHONOV_REG_PARAMETER:
     _alpha_arr = tikhonov_regularized_solve(X_train, y_train, reg_param)
-    y_pred = np.matmul(X_test, _alpha_arr)
+    y_pred = np.matmul(X_test, _alpha_arr) #final predicted y values
     
     print(f"regularization parameter: {reg_param}")
     print(f"MSE: {((np.linalg.norm(y_test-y_pred))**2)/test_samples}")
-    sanity_check(column_names=columns_names, y_test=y_test, y_pred=y_pred, _alpha_arr=_alpha_arr)
+    sanity_check(column_names=columns_names, y_test=y_test, y_pred=y_pred, _alpha_arr=_alpha_arr, reg_param=reg_param)
